@@ -39,7 +39,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.spark.demo.WordCountProcess</mainClass>
+              <mainClass>com.spark.demo.process.WordCountProcess</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
@@ -64,13 +64,9 @@
           <execution>
             <id>scala-compile-first</id>
             <goals>
+              <goal>add-source</goal>
               <goal>compile</goal>
             </goals>
-            <configuration>
-              <includes>
-                <include>**/*.scala</include>
-              </includes>
-            </configuration>
           </execution>
           <execution>
             <id>scala-test-compile</id>
@@ -93,5 +89,45 @@
       </resource>
     </resources>
   </build>
+  <profiles>
+    <profile>
+      <!--开发环境-->
+      <id>dev</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+              <execution>
+                <id>conf</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <overwrite>true</overwrite>
+                  <outputDirectory>src/main/resources</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/resources/dev</directory>
+                      <filtering>true</filtering>
+                      <includes>
+                        <include>**/*.*</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+  </profiles>
 
 </project>
